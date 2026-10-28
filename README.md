@@ -19,7 +19,7 @@ database.py       SQLite access layer
 validators.py     Input validation rules
 ai_service.py     Gemini API integration
 templates/        Jinja2 + Bootstrap pages
-.env.example      Template for configuration (copy to .env)
+.env     Template for configuration 
 ```
 
 ## Setup
