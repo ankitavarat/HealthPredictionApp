@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if patient else 'Add' }} Patient{% endblock %}
+{% macro field(name, label, placeholder='', type='text', step=None) %}
+  <div class="col-md-6">
+    <label class="form-label" for="{{ name }}">{{ label }}</label>
+    <input class="form-control {{ 'is-invalid' if errors.get(name) }}" id="{{ name }}" name="{{ name }}"
+           type="{{ type }}" {% if step %}step="{{ step }}"{% endif %}
+           placeholder="{{ placeholder }}" value="{{ values.get(name, '') }}" required>
+    {% if errors.get(name) %}<div class="invalid-feedback">{{ errors[name] }}</div>{% endif %}
+  </div>
+{% endmacro %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-header bg-white"><strong>{{ 'Edit' if patient else 'Add' }} Patient</strong></div>
+  <div class="card-body">
+    <form method="post" novalidate class="row g-3">
+      {{ field('full_name', 'Full Name', 'e.g. Jane Citizen') }}
+      {{ field('dob', 'Date of Birth (dd/mm/yyyy)', 'dd/mm/yyyy') }}
+      {{ field('email', 'Email Address', 'name@example.com', 'email') }}
+      {{ field('glucose', 'Glucose (mg/dL)', 'e.g. 95', 'text') }}
+      {{ field('haemoglobin', 'Haemoglobin (g/dL)', 'e.g. 13.5', 'text') }}
+      {{ field('cholesterol', 'Cholesterol (mg/dL)', 'e.g. 180', 'text') }}
+      <div class="col-12">
+        <p class="text-muted small mb-2">Remarks are generated automatically by the AI after the data is saved.</p>
+        <button class="btn btn-primary" type="submit">{{ 'Update' if patient else 'Save' }}</button>
+        <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

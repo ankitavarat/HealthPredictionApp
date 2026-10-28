@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-header bg-white"><strong>Patient Records</strong> ({{ patients|length }})</div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>#</th><th>Full Name</th><th>Date of Birth</th><th>Email</th>
+          <th>Glucose<br><small class="text-muted">mg/dL</small></th>
+          <th>Haemoglobin<br><small class="text-muted">g/dL</small></th>
+          <th>Cholesterol<br><small class="text-muted">mg/dL</small></th>
+          <th style="min-width: 260px;">Remarks (AI)</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in patients %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.full_name }}</td>
+          <td>{{ p.dob|ddmmyyyy }}</td>
+          <td>{{ p.email }}</td>
+          <td>{{ p.glucose }}</td>
+          <td>{{ p.haemoglobin }}</td>
+          <td>{{ p.cholesterol }}</td>
+          <td>{{ p.remarks }}</td>
+          <td class="text-end text-nowrap">
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('edit', patient_id=p.id) }}">Edit</a>
+            <form class="d-inline" method="post" action="{{ url_for('predict', patient_id=p.id) }}">
+              <button class="btn btn-sm btn-outline-secondary" type="submit">Re-run AI</button>
+            </form>
+            <form class="d-inline" method="post" action="{{ url_for('delete', patient_id=p.id) }}"
+                  onsubmit="return confirm('Delete record for {{ p.full_name }}?');">
+              <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="9" class="text-center text-muted py-4">No records yet. Click "Add Patient".</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
